@@ -1,0 +1,49 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: #f3f3f3;
+}
+
+.wrapper {
+  display: grid;
+}
+
+.productsBox {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 20px;
+}
+
+.product {
+  display: flex;
+  flex-direction: row;
+  width: 250px;
+  height: 100px;
+  border-radius: 8px;
+  background: #fff;
+  padding: 15px;
+  margin-right: 20px;
+  margin-bottom: 20px;
+}
+
+.product:hover {
+  box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+}
+
+.img {
+  height: 100%;
+  margin-right: 10px;
+}
+
+.title {
+  font-size: 25px;
+  margin-bottom: 15px;
+}
+
+.category {
+  margin-bottom: 10px;
+}
