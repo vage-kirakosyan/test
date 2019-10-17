@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>Test</title>
   <link rel="stylesheet" href="styles.css">
+  <script src="script.js"></script>
 </head>
 <body>
 <div class="wrapper">
@@ -12,19 +13,19 @@
       <div class="filterItem categoryFilter">
         <h2>Категория</h2>
         <select name="category" id="category">
-          <option value="Category1">Category 1</option>
-          <option value="Category2">Category 2</option>
-          <option value="Category3">Category 3</option>
-          <option value="Category4">Category 4</option>
+          <option value="1">Category 1</option>
+          <option value="2">Category 2</option>
+          <option value="3">Category 3</option>
+          <option value="4">Category 4</option>
         </select>
       </div>
       <div class="filterItem priceFilter">
         <h2>По цене</h2>
-        <p><input name="price" type="radio" value="min"> < 5000</p>
-        <p><input name="price" type="radio" value="max"> &ge; 5000</p>
+        <p><input class="priceBtn" name="price" type="radio" value="1"> < 5000</p>
+        <p><input class="priceBtn" name="price" type="radio" value="2"> &ge; 5000</p>
       </div>
       <div class="filterItem quantityFilter">
-        <p><input type="checkbox"> Товар в наличии</p>
+        <p><input type="checkbox" id="quantity"> Товар в наличии</p>
       </div>
     </div>
   </div>
@@ -32,6 +33,5 @@
     <div class="productsBox" id="productsBox"></div>
   </div>
 </div>
-<script src="script.js"></script>
 </body>
 </html>
