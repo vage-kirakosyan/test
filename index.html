@@ -7,11 +7,29 @@
 </head>
 <body>
 <div class="wrapper">
-  <div class="leftSide"></div>
-  <div class="rightSide">
-    <div class="productsBox" id="productsBox">
-
+  <div class="leftSide">
+    <div class="filters">
+      <div class="filterItem categoryFilter">
+        <h2>Категория</h2>
+        <select name="category" id="category">
+          <option value="Category1">Category 1</option>
+          <option value="Category2">Category 2</option>
+          <option value="Category3">Category 3</option>
+          <option value="Category4">Category 4</option>
+        </select>
+      </div>
+      <div class="filterItem priceFilter">
+        <h2>По цене</h2>
+        <p><input name="price" type="radio" value="min"> < 5000</p>
+        <p><input name="price" type="radio" value="max"> &ge; 5000</p>
+      </div>
+      <div class="filterItem quantityFilter">
+        <p><input type="checkbox"> Товар в наличии</p>
+      </div>
     </div>
+  </div>
+  <div class="rightSide">
+    <div class="productsBox" id="productsBox"></div>
   </div>
 </div>
 <script src="script.js"></script>
