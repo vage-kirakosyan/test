@@ -5,6 +5,7 @@ const store = {
   getProducts() {
     fetch('http://www.mocky.io/v2/5d944b9f2f00006b008ff619')
       .then(response => {
+        console.log(response)
         if (response.ok) {
           return response.json();
         }
@@ -18,9 +19,9 @@ const store = {
       )
       .catch(
         error => {
-          document.getElementById('productsBox').innerHTML = `<p class="listingError">Кажется сервер умер</p>`;
+          alert(error);
         }
-      );
+    );
   },
 };
 
@@ -68,6 +69,12 @@ const productRender = (productArr, settings) => {
          </div>`
     ));
     document.getElementById('productsBox').innerHTML = listing.join('');
+
+    /* Вешаем обработчики клика на карточку товара */
+    const products = document.getElementsByClassName('product');
+    for (let product of products) {
+      product.addEventListener('click', deleteProductCart)
+    }
   }
 };
 
@@ -160,6 +167,10 @@ const setCheckedFilter = () => {
   if(filtersSetting.quantity === 'true') {
     document.getElementById('quantity').checked = true;
   }
+};
+
+const deleteProductCart = (e) => {
+  e.currentTarget.style.display = 'none';
 };
 
 window.onload = function() {
