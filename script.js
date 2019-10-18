@@ -14,7 +14,11 @@ const store = {
           this.products = data.data;
           productRender(data.data, createFilterSettings());
           setCheckedFilter();
-          console.log(this.products);
+        }
+      )
+      .catch(
+        error => {
+          document.getElementById('productsBox').innerHTML = `<p class="listingError">Кажется сервер умер</p>`;
         }
       );
   },
@@ -79,7 +83,6 @@ const onChangePriceHandler = (e) => {
   const value = e.target.value;
   applyFilter('price', value);
   productRender(store.products, createFilterSettings());
-  console.log(e);
 };
 
 /* Обрабатываем нажатие на "Товары в наличии" */
@@ -96,7 +99,6 @@ const applyFilter = (name, val) => {
   for(let i=0; i<parameters.length; i++) {
     if(parameters[i][0] !== name) {
       newSearch += `${parameters[i].join('=')}&`;
-      console.log('newSearch ' + newSearch);
     }
   }
   newSearch += `${name}=${val}`;
