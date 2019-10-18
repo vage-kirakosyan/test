@@ -62,7 +62,10 @@ const productRender = (productArr, settings) => {
           return true;
         }
       });
-    const listing = filteredListing.map(item => (
+    if(filteredListing.length === 0) {
+      document.getElementById('productsBox').innerHTML = '<p class="listingError">По данному запросу товаров нет</p>';
+    } else  {
+      const listing = filteredListing.map(item => (
         `<div class="product">
            <img class="img" src="${item.image}" />
            <div class="infoBox">
@@ -72,7 +75,8 @@ const productRender = (productArr, settings) => {
            </div>
          </div>`
       ));
-    document.getElementById('productsBox').innerHTML = listing.join('');
+      document.getElementById('productsBox').innerHTML = listing.join('');
+    }
   }
 
 };
