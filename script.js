@@ -11,23 +11,18 @@ const store = {
       .then(
         data => {
           this.products = data.data;
-          productRender(data.data);
-          console.log(store.products);
+          productRender(data.data, createFilterSettings());
+          console.log(this.products);
         }
       );
   },
 };
 
-const state = {
-  category: 1,
-  price: 0,
-  quantity: false,
-};
-
-const productRender = (productArr) => {
+const productRender = (productArr, settings) => {
+  if(settings === false) {
     const listing = productArr.map(item => {
-        return (
-          `<div class="product">
+      return (
+        `<div class="product">
            <img class="img" src="${item.image}" />
            <div class="infoBox">
              <p class="title">${item.title}</p>
@@ -35,54 +30,108 @@ const productRender = (productArr) => {
              <p class="price">Цена: ${item.price}</p>
            </div>
          </div>`
-        );
-      });
+      );
+    });
     document.getElementById('productsBox').innerHTML = listing.join('');
+  } else {
+    const filteredListing = productArr
+      .filter(prod => {
+        if(settings.category === '1'
+          || settings.category === '2'
+          || settings.category === '3'
+          || settings.category === '4'
+        ) {
+          return String(prod.category.id) === settings.category;
+        } else if(settings.category === undefined || settings.category === '0') {
+          return true
+        }
+      })
+      .filter(prod => {
+        if(settings.price === '1') {
+          return prod.price < 5000;
+        } else if(settings.price === '2') {
+          return prod.price >= 5000;
+        } else {
+          return true;
+        }
+      })
+      .filter(prod => {
+        if(settings.quantity === 'true') {
+          return prod.quantity > 0;
+        } else if(settings.quantity === 'false' || settings.quantity === undefined) {
+          return true;
+        }
+      });
+    const listing = filteredListing.map(item => (
+        `<div class="product">
+           <img class="img" src="${item.image}" />
+           <div class="infoBox">
+             <p class="title">${item.title}</p>
+             <p class="category">${item.category.title !== undefined ? item.category.title : ''}</p>
+             <p class="price">Цена: ${item.price}</p>
+           </div>
+         </div>`
+      ));
+    document.getElementById('productsBox').innerHTML = listing.join('');
+  }
+
 };
 
 const onChangeCategoryHandler = (e) => {
   const value = e.target.value;
-  productRender(setCategoryFilter(state.category, store.products));
-  console.log(value);
+  applyFilter('category', value);
+  productRender(store.products, createFilterSettings());
 };
 
 const onChangePriceHandler = (e) => {
   const value = e.target.value;
-  productRender(setPriceFilter(state.price, store.products));
-  console.log(value);
+  applyFilter('price', value);
+  productRender(store.products, createFilterSettings());
 };
 
 const onChangeQuantityHandler = (e) => {
-  state.quantity = e.target.checked;
-  productRender(setQuantityFilter(state.quantity, store.products));
+  const value = e.target.checked;
+  applyFilter('quantity', value);
+  productRender(store.products, createFilterSettings());
 };
 
-const setCategoryFilter = (state, products) => {
-  if(state === 1) {
-    return products.filter(prod => prod.category.id !== 1);
-  } else if(state === 2) {
-    return products.filter(prod => prod.category.id !== 2);
-  } else if(state === 3) {
-    return products.filter(prod => prod.category.id !== 3);
-  } else if(state === 4) {
-    return products.filter(prod => prod.category.id !== 4);
+const applyFilter = (name, val) => {
+  let newSearch ='';
+  const parameters = getFilterParams();
+  for(let i=0; i<parameters.length; i++) {
+    if(parameters[i][0] !== name) {
+      newSearch += `${parameters[i].join('=')}&`;
+      console.log('newSearch ' + newSearch);
+    }
   }
-};
-const setPriceFilter = (state, products) => {
-  if(state === 1) {
-    return products.filter(prod => prod.price > 5000);
-  } else if(state === 2) {
-    return products.filter(prod => prod.price <= 5000);
-  }
-};
-const setQuantityFilter = (state, products) => {
-  if(state === true) {
-    return products.filter(prod => prod.quantity > 0);
-  }
+  newSearch += `${name}=${val}`;
+  history.pushState({}, 'lol', `?${newSearch}`);
 };
 
-const applyFilter = () => {
+const getFilterParams = () => {
+  return document.location.search
+    .slice(1)
+    .split('&')
+    .map(item => item.split('='));
+};
 
+const createFilterSettings = () => {
+  const parameters = getFilterParams();
+  const filterSettings = {
+    category: undefined,
+    price: undefined,
+    quantity: undefined,
+  };
+  parameters.forEach(item => {
+    if(item.includes('category')) {
+      filterSettings.category = item[1];
+    } else if(item.includes('price')) {
+      filterSettings.price = item[1];
+    } else if(item.includes('quantity')) {
+      filterSettings.quantity = item[1];
+    }
+  });
+  return filterSettings;
 };
 
 window.onload = function() {
